@@ -13,7 +13,7 @@ export const setSelectedCell = (i, j) => {
   directions.forEach((dir) => {
     const newRow = i + dir[0] * 2;
     const newCol = j + dir[1] * 2;
-    
+
     if (
       newRow >= 0 &&
       newRow < board.length &&
@@ -23,6 +23,7 @@ export const setSelectedCell = (i, j) => {
       if (
         board[newRow][newCol] !== null &&
         board[newRow][newCol] !== undefined &&
+        board[i + dir[0]][j + dir[1]] &&
         !board[newRow][newCol]
       ) {
         avMoves.push({

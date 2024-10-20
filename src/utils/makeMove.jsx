@@ -1,11 +1,15 @@
 import { useAvMoves } from "../store/availableMoves";
 import { useBoard } from "../store/board";
+import { useResultPegs } from "../store/resultPegs";
 import { useSelected } from "../store/selectedCell";
-
+import { countPegs } from "./CountPegs";
+import { hasAvailableMoves } from "./hasAvailableMoves";
+import { setSelectedCell } from "./selectCell";
 export const makeMove = (i, j) => {
-  const { selected, setSelected } = useSelected.getState();
+  const { selected } = useSelected.getState();
   const { availableMoves } = useAvMoves.getState();
   const { board, setBoard } = useBoard.getState();
+  const { setResultPegs } = useResultPegs.getState();
 
   if (selected !== null && availableMoves.length !== 0) {
     const move = availableMoves.find(
@@ -17,7 +21,11 @@ export const makeMove = (i, j) => {
       newBoard[move.move[0]][move.move[1]] = true;
       newBoard[move.delete[0]][move.delete[1]] = false;
       setBoard(newBoard);
-      setSelected([move.move[0], move.move[1]]);
+
+      setSelectedCell(move.move[0], move.move[1]);
+      if (!hasAvailableMoves()) {
+        setResultPegs(countPegs());
+      }
     }
   }
 };
